@@ -1,2 +1,0 @@
-# pupstagram
-Created with CodeSandbox
