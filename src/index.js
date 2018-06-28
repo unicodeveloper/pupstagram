@@ -2,16 +2,23 @@ import React from "react";
 import { AppRegistry, View } from "react-native-web";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import ApolloClient from "apollo-boost";
+//import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
+import { createPersistedQueryLink } from "apollo-link-persisted-queries";
+import { createHttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import ApolloClient from "apollo-client";
 
 import Feed from "./views/Feed";
 import Detail from "./views/Detail";
 import Likes from "./views/Likes";
 import { defaults, resolvers } from "./resolvers";
 
+const link = createPersistedQueryLink().concat(createHttpLink({ uri: "http://localhost:4000/graphql" }));
+
 const client = new ApolloClient({
-  uri: "https://dog-graphql-api.glitch.me/graphql",
+  cache: new InMemoryCache(),
+  link: link,
   clientState: {
     defaults,
     resolvers
